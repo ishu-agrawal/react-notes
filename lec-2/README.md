@@ -1,0 +1,3 @@
+- injected npm
+- injected parcel
+- importing react from node_modules instead of CDN
