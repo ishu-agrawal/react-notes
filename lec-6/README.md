@@ -1,0 +1,5 @@
+- dynamicaaly fetching data for API
+- resolving CORS error using Chrome Extension
+- removed mock data
+- adding Shimmer UI
+- adding search bar
