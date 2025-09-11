@@ -1,0 +1,3 @@
+- high order components
+- making  menu card dyanmic
+- adding accordian to menu page
