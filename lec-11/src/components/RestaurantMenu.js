@@ -10,6 +10,8 @@ const RestaurantMenu = () => {
     const {resId} = useParams();
     // console.log(resId)
 
+    const [showIdx, setShowIdx] = useState(0);
+
     const resInfo = useRestaurantMenu(resId);
 
     if((resInfo == null) || resInfo.length == 0){
@@ -43,8 +45,15 @@ const RestaurantMenu = () => {
             <p>{costForTwoMessage}</p>
 
             {/* categories accordian */}
-            { categories.map((category) => (
-                <RestaurantCategory key={category?.card?.card?.categoryId} data={category?.card?.card}/>
+            { categories.map((category, index) => (
+
+                // controlled component -> controlled by parent (restaurant menu)
+                <RestaurantCategory 
+                    key={category?.card?.card?.categoryId} 
+                    data={category?.card?.card}
+                    showItems={index == showIdx ? true : false}
+                    setShowIdx = {() => setShowIdx(index)}
+                />
             ))}
 
             {/* <h2>Menu: </h2> */}

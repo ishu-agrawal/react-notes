@@ -8,16 +8,30 @@ import Contact from './components/Contact';
 import ErrorPage from './components/ErrorPage';
 import RestaurantMenu from './components/RestaurantMenu';
 // import Grocery from './components/Grocery';
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import Shimmer from './components/Shimmer';
+import UserContext from './utils/UserContext';
 
 
 const AppLayout = () => {
+    const [userName, setUserName] = useState();
+
+    useEffect(() => {
+        const data = {
+            name: "Utkarsh Agrawal",
+        }
+        setUserName(data.name);
+    }, []);
+
     return (
-        <div className='app'>
-            <Header />
-            <Outlet />
-        </div>
+        <UserContext.Provider value={{loggedInUser: userName, setUserName}}>
+            <div className='app'>
+                <UserContext.Provider value={{loggedInUser: "Ishu"}}>
+                    <Header />
+                </UserContext.Provider>
+                <Outlet />
+            </div>
+        </ UserContext.Provider>
     )
 }
 

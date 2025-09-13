@@ -1,14 +1,17 @@
 import RestaurantCard, { withOpenLabel } from "./RestaurantCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
 
     const [listOfRes, setListOfRes] = useState([]); 
     const [filteredRes, setFilteredRes] = useState([]); 
     const [searchText, setSearchText] = useState("");
+
+    const { loggedInUser, setUserName } = useContext(UserContext);
 
     // high order component
     const RestaurantCardOpen = withOpenLabel(RestaurantCard);
@@ -77,6 +80,14 @@ const Body = () => {
                     >
                         Top Rated Restaurant
                     </button>
+                </div>
+                <div className="filter flex items-center m-4 p-4">
+                    <label>UserName: </label>
+                    <input
+                        className="search-box border border-s-black p-2" 
+                        value={loggedInUser}
+                        onChange={(e) => setUserName(e.target.value)}
+                    />
                 </div>
             </div>
             <div className="res-container flex flex-wrap">
