@@ -28,7 +28,7 @@ const Body = () => {
         const json = await data.json();
         setListOfRes(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
         setFilteredRes(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-        console.log('data: ',json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
+        // console.log('data: ',json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
     };
 
     const onlineStatus = useOnlineStatus();
@@ -51,6 +51,7 @@ const Body = () => {
                     <input type="text" 
                         className="search-box border border-s-black" 
                         value={searchText}
+                        data-testid = "searchInput"
                         onChange={(e) => {
                             setSearchText(e.target.value)
                         }}
