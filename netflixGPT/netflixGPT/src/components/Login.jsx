@@ -1,15 +1,18 @@
 import { useRef, useState } from "react";
 import Header from "./Header";
 import validateData from "../utils/validateData";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
     const [isSignInFrom, setIsSignInFrom] = useState(true);
     const [errorMsg, setErrorMsg] = useState(null);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const toggleSignInForm = () => {
         setIsSignInFrom(!isSignInFrom);
@@ -36,7 +39,23 @@ const Login = () => {
                 .then((userCredential) => {
                     // Signed up 
                     const user = userCredential.user;
-                    navigate('/browse');
+                    updateProfile(user, {
+                        displayName: username.current?.value, 
+                        photoURL: "https://occ-0-4857-2164.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABTZ2zlLdBVC05fsd2YQAR43J6vB1NAUBOOrxt7oaFATxMhtdzlNZ846H3D8TZzooe2-FT853YVYs8p001KVFYopWi4D4NXM.png"
+                        }).then(() => {
+                            const {uid, email, displayName, photoURL} = auth.currentUser;
+                            dispatch(addUser({
+                                uid: uid,
+                                email: email,
+                                displayName: displayName,
+                                photoURL: photoURL
+                            }))
+                            navigate('/browse');
+                        }).catch((error) => {
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            setErrorMsg(errorCode + '-' + errorMessage);
+                        });
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -55,7 +74,23 @@ const Login = () => {
                 .then((userCredential) => {
                     // Signed in 
                     const user = userCredential.user;
-                    navigate('/browse');
+                        updateProfile(user, {
+                        displayName: username.current?.value, 
+                        photoURL: "https://occ-0-4857-2164.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABTZ2zlLdBVC05fsd2YQAR43J6vB1NAUBOOrxt7oaFATxMhtdzlNZ846H3D8TZzooe2-FT853YVYs8p001KVFYopWi4D4NXM.png"
+                        }).then(() => {
+                            const {uid, email, displayName, photoURL} = auth.currentUser;
+                            dispatch(addUser({
+                                uid: uid,
+                                email: email,
+                                displayName: displayName,
+                                photoURL: photoURL
+                            }))
+                            navigate('/browse');
+                        }).catch((error) => {
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            setErrorMsg(errorCode + '-' + errorMessage);
+                        });
                 })
                 .catch((error) => {
                     const errorCode = error.code;
