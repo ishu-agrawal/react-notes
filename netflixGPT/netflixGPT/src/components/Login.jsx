@@ -1,11 +1,66 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Header from "./Header";
-
+import validateData from "../utils/validateData";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/firebase";
 const Login = () => {
     const [isSignInFrom, setIsSignInFrom] = useState(true);
+    const [errorMsg, setErrorMsg] = useState(null);
 
     const toggleSignInForm = () => {
         setIsSignInFrom(!isSignInFrom);
+    }
+
+    const username = useRef(null);
+    const email = useRef(null);
+    const password = useRef(null);
+
+    // validate input entries
+    const handleButtonClick = () => {
+        const message = validateData(username.current != null && username.current.value, email.current.value, password.current.value);
+        setErrorMsg(message);
+
+        if(message != null) return;
+
+        // sign-up logic
+        if(!isSignInFrom){
+            createUserWithEmailAndPassword(
+                auth, 
+                email.current.value, 
+                password.current.value
+            )
+                .then((userCredential) => {
+                    // Signed up 
+                    const user = userCredential.user;
+                    console.log("Signed Up: " ,user);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMsg(errorCode + '-' + errorMessage);
+                });
+
+        } 
+        // sign-in logic
+        else {
+            signInWithEmailAndPassword(
+                auth, 
+                email.current.value, 
+                password.current.value
+            )
+                .then((userCredential) => {
+                    // Signed in 
+                    const user = userCredential.user;
+                    console.log("Signed In: ", user)
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    setErrorMsg(errorCode + '-' + errorMessage);
+
+                });
+
+        }
     }
 
     return (
@@ -19,26 +74,36 @@ const Login = () => {
 
             {/* Login from */}
             <form 
+                onSubmit={(e) => e.preventDefault()}
                 className="absolute p-12 bg-black/70 w-3/12 my-36 mx-auto left-0 right-0 text-white rounded-lg">
                 <h1 className="font-bold text-3xl py-4">{isSignInFrom ? "Sign In" : "Sign Up"}</h1>
                 {!isSignInFrom && 
                     <input 
+                    ref = {username}
                     type="text"
                     placeholder="Username"
                     className="p-4 my-4 bg-black/50 text-white text-sm w-full"
                 />
                 }
                 <input 
+                    ref = {email}
                     type="text"
-                    placeholder="Email or mobile number"
+                    placeholder="Email address"
                     className="p-4 my-4 bg-black/50 text-white text-sm w-full"
                 />
                 <input 
+                    ref = {password}
                     type="password"
                     placeholder="Password"
                     className="p-4 my-4 bg-black/50 text-white text-sm w-full"
                 />
-                <button className="p-4 my-4 bg-red-700 w-full text-sm rounded-lg">{isSignInFrom ? "Sign In" : "Sign Up"}</button>
+                <p className="text-red-500 text-sm py-2">{errorMsg}</p>
+                <button 
+                    className="p-4 my-4 bg-red-700 w-full text-sm rounded-lg cursor-pointer"
+                    onClick={handleButtonClick}
+                >
+                    {isSignInFrom ? "Sign In" : "Sign Up"}
+                </button>
 
                 {isSignInFrom ? 
                     <p className="py-6 text-sm">
