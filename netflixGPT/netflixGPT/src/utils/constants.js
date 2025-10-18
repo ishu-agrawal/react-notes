@@ -9,4 +9,4 @@ export const API_CONFIG = {
   }
 };
 
-export const IMG_CDN_URL = 'https://image.tmdb.org/t/p/w780'
+export const IMG_CDN_URL = 'https://image.tmdb.org/t/p/w500'
