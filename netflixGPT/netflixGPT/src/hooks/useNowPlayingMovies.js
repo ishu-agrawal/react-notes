@@ -10,7 +10,6 @@ const useNowPlayingMovies = () => {
         try {
             const res = await fetch("https://api.themoviedb.org/3/movie/now_playing", API_CONFIG);
             const data = await res.json();
-            console.log(data);
 
             dispatch(addNowPlayingMovies(data.results));
         } catch (err) {
