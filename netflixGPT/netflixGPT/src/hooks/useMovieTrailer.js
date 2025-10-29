@@ -1,26 +1,29 @@
 import { useEffect, useState } from "react";
-import { API_CONFIG } from "../utils/constants";
 
-const useMovieTrailer = (movieId) => {
+const useMovieTrailer = (movieTitle) => {
     const [trailerData, setTrailerData] = useState(null);
-    const getMovieVideo = async() => {
-        const url = `https://api.imdbapi.dev/titles/${movieId}/videos`;
-        const data = await fetch(url);
-        const json = await data.json();
 
-        const filterTrailers = json.videos.filter(
-            (video) => video.type == 'trailer'
-        );
+    const fetchTrailer = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/trailer?title=${encodeURIComponent(movieTitle)}`);
+            const json = await response.json();
 
-        const trailer = filterTrailers.length ? filterTrailers[0] : json.videos[0];
-        setTrailerData(trailer);
-    }
+            if (json.items[0]?.id?.videoId) {
+                setTrailerData(json.items[0]);
+            } else {
+                console.error("No trailer found:", json);
+            }
+        } catch (error) {
+            console.error("Error fetching trailer:", error);
+        }
+    };
 
     useEffect(() => {
-        getMovieVideo()
-    }, []);
+        if (movieTitle) 
+            fetchTrailer();
+    }, [movieTitle]);
 
     return trailerData;
-}
+};
 
 export default useMovieTrailer;
