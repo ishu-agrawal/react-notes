@@ -1,0 +1,4 @@
+- custom hooks
+- single responsibity principle
+- adding offline page using event listeners
+- chunking / code splitting / dynamic bundling

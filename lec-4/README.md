@@ -1,0 +1,4 @@
+- structuring the app
+- using props
+- integrating swiggy API
+- creating reusable components

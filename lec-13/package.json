@@ -1,0 +1,42 @@
+{
+  "name": "react",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "test": "jest",
+    "watch-test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ishu-agrawal/react-notes.git"
+  },
+  "author": "Utkarsh Agrawal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ishu-agrawal/react-notes/issues"
+  },
+  "homepage": "https://github.com/ishu-agrawal/react-notes#readme",
+  "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@testing-library/react": "^16.3.0",
+    "babel-jest": "^30.1.2",
+    "jest": "^30.1.3",
+    "jest-environment-jsdom": "^30.1.2",
+    "parcel": "^2.15.4"
+  },
+  "dependencies": {
+    "@babel/preset-react": "^7.27.1",
+    "@reduxjs/toolkit": "^2.9.0",
+    "@tailwindcss/postcss": "^4.1.13",
+    "@testing-library/jest-dom": "^6.8.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-redux": "^9.2.0",
+    "react-router": "^7.8.2",
+    "react-router-dom": "^6.30.1",
+    "tailwindcss": "^4.1.13"
+  }
+}

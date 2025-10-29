@@ -1,0 +1,9 @@
+- high order components
+- making  menu card dyanmic
+- adding accordian to menu page
+- controlled and uncontrolled components
+- context API
+    - provider
+    - consumer
+    - createContext
+    - useContext
