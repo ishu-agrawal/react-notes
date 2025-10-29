@@ -6,7 +6,7 @@ const MovieCard = ({posterPath}) => {
         <img 
             className="rounded-lg"
             alt = 'Movie'
-            src = {IMG_CDN_URL + posterPath}
+            src = {posterPath}
         />
     </div>
   )

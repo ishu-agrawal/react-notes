@@ -5,7 +5,8 @@ const useMovieTrailer = (movieTitle) => {
 
     const fetchTrailer = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/trailer?title=${encodeURIComponent(movieTitle)}`);
+            const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+            const response = await fetch(`${API_BASE}/api/trailer?title=${encodeURIComponent(movieTitle)}`);
             const json = await response.json();
 
             if (json.items[0]?.id?.videoId) {
