@@ -12,8 +12,9 @@ const GPTSearchBar = () => {
     const handleGPTSearch = async() => {
         console.log(searchText.current.value);
          try {     
+            const userInput = searchText.current.value;
             const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
-            const query = "act as a movie recommendation system and suggest some movies for the query: " + searchText.current.value + ". only give me names of 5 movies, comma seperated like the example result given ahead. Example result : Gadar, Sholay, Don, Golmaal, Kuch kuch hota hai";
+            const query = `Act as a movie recommendation system. Suggest exactly 5 movie names (comma-separated) for the topic: ${userInput}.`;
             const res = await axios.post(`${API_BASE}/api/chat`, { query });
             console.log(res)
             setResponse(res.data.output);

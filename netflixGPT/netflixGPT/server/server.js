@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import OpenAI from "openai";
 
 dotenv.config({ path: "../.env" }); 
 
@@ -9,23 +8,34 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 app.post("/api/chat", async (req, res) => {
   try {
     const { query } = req.body;
-    const response = await openai.responses.create({
-      model: "gpt-4o-mini",
-      input: query,
+
+    const response = await fetch(`${process.env.GEMINI_API_URL}?key=${process.env.GEMINI_API_KEY}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: query }] }],
+      }),
     });
-    res.json({ output: response.output_text });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error?.message || "Gemini API error");
+    }
+
+    // Extract text safely
+    const output =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "No response from Gemini.";
+
+    res.json({ output });
   } catch (error) {
-    console.error("OpenAI Error:", error);
-    res
-      .status(error.status || 500)
-      .json({ message: error.message || "Server Error" });
+    console.error("Gemini Error:", error);
+    res.status(500).json({ message: error.message || "Server Error" });
   }
 });
 
