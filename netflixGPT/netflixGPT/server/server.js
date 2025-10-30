@@ -16,18 +16,19 @@ const openai = new OpenAI({
 app.post("/api/chat", async (req, res) => {
   try {
     const { query } = req.body;
-
-    const response = await openai.chat.completions.create({
-      model: "gpt-5",
-      messages: [{ role: "user", content: query }],
+    const response = await openai.responses.create({
+      model: "gpt-4o-mini",
+      input: query,
     });
-
-    res.json({ output: response.choices[0].message.content });
+    res.json({ output: response.output_text });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Something went wrong" });
+    console.error("OpenAI Error:", error);
+    res
+      .status(error.status || 500)
+      .json({ message: error.message || "Server Error" });
   }
 });
+
 
 app.get("/api/trailer", async (req, res) => {
   try {
