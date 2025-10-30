@@ -1,23 +1,33 @@
 import React, { useRef, useState } from 'react'
 import lang from '../../utils/langConstants'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios';
+import { addMovieResult } from '../../utils/gptSlice';
+import fetchMovieData from '../../hooks/fetchMovieData';
 
 const GPTSearchBar = () => {
     const langKey = useSelector(store => store.lang.selectedLang);
-
-    const [response, setResponse] = useState("")
+    const dispatch = useDispatch();
     const searchText = useRef(null)
 
     const handleGPTSearch = async() => {
-        console.log(searchText.current.value);
-         try {     
+        try {     
             const userInput = searchText.current.value;
             const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
             const query = `Act as a movie recommendation system. Suggest exactly 5 movie names (comma-separated) for the topic: ${userInput}.`;
             const res = await axios.post(`${API_BASE}/api/chat`, { query });
-            console.log(res)
-            setResponse(res.data.output);
+            const movieList = res.data.output.split(",");
+
+            const promiseArr = movieList.map(
+                (movie) => fetchMovieData(movie)
+            )
+
+            const result = await Promise.all(promiseArr);
+            console.log(result)
+            dispatch(addMovieResult({
+                movieNames : movieList,
+                movieResults : result,
+            }));
 
         } catch (err) {
             console.error(err);
